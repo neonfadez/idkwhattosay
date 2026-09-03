@@ -1,0 +1,568 @@
+/* ==========================================================================
+   DESIGN SYSTEM & CSS VARIABLES
+   ========================================================================== */
+:root {
+  /* Color Palette - Dark Warm Romantic Charcoal & Glass */
+  --bg-dark: #0b090a;
+  --bg-gradient-start: #0e0b0d;
+  --bg-gradient-end: #141013;
+  
+  --color-surface: rgba(255, 255, 255, 0.035);
+  --color-surface-hover: rgba(255, 255, 255, 0.055);
+  --color-surface-memories: rgba(212, 163, 115, 0.04);
+  
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-highlight: rgba(212, 163, 115, 0.22);
+  
+  --text-primary: #f7f4f3;
+  --text-secondary: #9e9694;
+  --text-muted: #6e6765;
+  --text-accent: #d4a373;
+  --text-rose: #cf9e9e;
+  
+  /* Typography */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Layout Sizing & Safe Areas */
+  --target-width: 390px;
+  --card-radius: 24px;
+  --btn-radius: 28px;
+  
+  /* Safe Area Insets */
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+
+/* Reset & Mobile Base Rules */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: radial-gradient(circle at 50% 20%, var(--bg-gradient-end) 0%, var(--bg-gradient-start) 60%, var(--bg-dark) 100%);
+  color: var(--text-primary);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   AMBIENT BACKGROUND LIGHT & GRAIN
+   ========================================================================== */
+.ambient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.28;
+  will-change: transform;
+}
+
+.orb-1 {
+  top: -10%;
+  left: 15%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, #5c2d3b 0%, rgba(92, 45, 59, 0) 70%);
+  animation: floatOrb1 22s ease-in-out infinite alternate;
+}
+
+.orb-2 {
+  top: 45%;
+  right: -10%;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, #4a3429 0%, rgba(74, 52, 41, 0) 70%);
+  animation: floatOrb2 26s ease-in-out infinite alternate;
+}
+
+.orb-3 {
+  bottom: -5%;
+  left: -5%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #3d2433 0%, rgba(61, 36, 51, 0) 70%);
+  animation: floatOrb3 24s ease-in-out infinite alternate;
+}
+
+.subtle-grain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+@keyframes floatOrb1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, 40px) scale(1.1); }
+  100% { transform: translate(-20px, 60px) scale(0.95); }
+}
+
+@keyframes floatOrb2 {
+  0% { transform: translate(0, 0) scale(0.95); }
+  50% { transform: translate(-40px, -30px) scale(1.08); }
+  100% { transform: translate(20px, 40px) scale(1); }
+}
+
+@keyframes floatOrb3 {
+  0% { transform: translate(0, 0) scale(1.05); }
+  50% { transform: translate(30px, -40px) scale(0.9); }
+  100% { transform: translate(-30px, -20px) scale(1.1); }
+}
+
+/* ==========================================================================
+   SCROLL PROGRESS BAR
+   ========================================================================== */
+.scroll-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.03);
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.scroll-progress-container.visible {
+  opacity: 1;
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--text-rose), var(--text-accent));
+  box-shadow: 0 0 10px rgba(212, 163, 115, 0.6);
+  transition: width 0.1s linear;
+}
+
+/* ==========================================================================
+   INTRO SCREEN
+   ========================================================================== */
+.intro-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: calc(max(60px, var(--sat)) + 40px);
+  padding-bottom: calc(max(40px, var(--sab)) + 30px);
+  padding-left: max(24px, var(--sal));
+  padding-right: max(24px, var(--sar));
+  text-align: center;
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1), filter 0.9s ease;
+}
+
+.intro-screen.fade-out {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.98);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.intro-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 340px;
+  margin: auto 0;
+}
+
+.intro-tag {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--text-accent);
+  margin-bottom: 2rem;
+  opacity: 0.85;
+  animation: fadeIn 1.2s ease forwards;
+}
+
+.intro-heading {
+  font-family: var(--font-serif);
+  font-size: 2.35rem;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 1.75rem;
+  animation: fadeInUp 1.4s ease forwards;
+}
+
+.intro-subtext {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+  animation: fadeInUp 1.6s ease forwards;
+}
+
+.intro-action {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  animation: fadeInUp 1.8s ease forwards;
+}
+
+/* READ BUTTON WITH TACTILE TOUCH FEEDBACK */
+.read-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  padding: 14px 36px;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.read-btn .btn-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.read-btn:hover, .read-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(212, 163, 115, 0.35);
+  box-shadow: 0 6px 24px rgba(212, 163, 115, 0.15);
+}
+
+.read-btn:hover .btn-arrow {
+  transform: translateY(3px);
+}
+
+.read-btn:active {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(212, 163, 115, 0.5);
+}
+
+/* ==========================================================================
+   MAIN LETTER CONTAINER
+   ========================================================================== */
+.letter-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 420px;
+  padding-top: calc(max(40px, var(--sat)) + 20px);
+  padding-bottom: calc(max(60px, var(--sab)) + 40px);
+  padding-left: max(20px, var(--sal));
+  padding-right: max(20px, var(--sar));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  opacity: 1;
+  transition: opacity 0.8s ease;
+}
+
+.letter-wrapper.hidden {
+  display: none;
+  opacity: 0;
+}
+
+/* Top Meta Divider */
+.letter-top-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 340px;
+  margin-bottom: 10px;
+  opacity: 0.6;
+}
+
+.meta-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   GLASSMORPHISM LETTER CARDS
+   ========================================================================== */
+.letter-card {
+  width: 100%;
+  max-width: 350px;
+  background: var(--color-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--card-radius);
+  padding: 32px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.section-tag {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--text-accent);
+  opacity: 0.85;
+  text-transform: lowercase;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-size: 1.08rem; /* ~17.5px */
+  line-height: 1.7;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.card-body p {
+  letter-spacing: 0.01em;
+}
+
+.text-italic-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.18rem;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+/* SECTION 02: Memories Visual Treatment */
+.card-memories {
+  background: var(--color-surface-memories);
+  border: 1px solid var(--border-highlight);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(212, 163, 115, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-memories::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--text-accent), transparent);
+  opacity: 0.6;
+}
+
+/* SECTION 03: Prominent Quote Box */
+.prominent-quote-box {
+  margin: 12px 0;
+  padding: 20px 18px;
+  background: rgba(255, 255, 255, 0.025);
+  border-left: 2px solid var(--text-accent);
+  border-radius: 4px 14px 14px 4px;
+}
+
+.prominent-quote {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  text-shadow: 0 0 20px rgba(247, 244, 243, 0.2);
+}
+
+/* SECTION 06: Hero Full-Screen Card */
+.card-hero {
+  min-height: calc(100vh - 160px);
+  min-height: calc(100dvh - 160px);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 44px 28px;
+}
+
+.hero-declaration-wrapper {
+  margin: 24px 0 16px 0;
+}
+
+.hero-declaration {
+  font-family: var(--font-serif);
+  font-size: 2.6rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.25), 0 0 10px rgba(212, 163, 115, 0.3);
+}
+
+.hero-body {
+  text-align: center;
+  align-items: center;
+  max-width: 300px;
+}
+
+/* ==========================================================================
+   FINAL SECTION (Quiet Ending)
+   ========================================================================== */
+.quiet-ending {
+  width: 100%;
+  max-width: 350px;
+  padding: 80px 10px 100px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 36px;
+}
+
+.quiet-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.quiet-line {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+.quiet-line.highlight-truth {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.quiet-line.narrative {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  max-width: 310px;
+  margin: 0 auto;
+}
+
+.signature-wrapper {
+  margin-top: 30px;
+}
+
+.signature {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-style: italic;
+  letter-spacing: 0.15em;
+  color: var(--text-accent);
+  opacity: 0.9;
+}
+
+/* ==========================================================================
+   SCROLL REVEAL & FADE ANIMATIONS
+   ========================================================================== */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   DESKTOP / LARGER VIEWPORT RESPONSIVENESS
+   ========================================================================== */
+@media (min-width: 768px) {
+  body {
+    justify-content: center;
+  }
+  .intro-screen, .letter-wrapper {
+    max-width: 440px;
+  }
+}
